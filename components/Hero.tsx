@@ -5,88 +5,100 @@ import { Language } from '../types';
 import { Scissors, Grip } from 'lucide-react';
 
 interface HeroProps {
-  lang: Language;
+    lang: Language;
 }
 
 const Hero: React.FC<HeroProps> = ({ lang }) => {
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+    const { scrollY } = useScroll();
+    const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-  // Mouse tracking with spring for smooth interpolation
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-  const springConfig = { damping: 40, stiffness: 120 };
-  const springX = useSpring(mouseX, springConfig);
-  const springY = useSpring(mouseY, springConfig);
+    // Mouse tracking with spring for smooth interpolation
+    const mouseX = useMotionValue(0.5);
+    const mouseY = useMotionValue(0.5);
+    const springConfig = { damping: 40, stiffness: 120 };
+    const springX = useSpring(mouseX, springConfig);
+    const springY = useSpring(mouseY, springConfig);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    const { innerWidth, innerHeight } = window;
-    mouseX.set(clientX / innerWidth);
-    mouseY.set(clientY / innerHeight);
-  };
+    const handleMouseMove = (e: React.MouseEvent) => {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
+        mouseX.set(clientX / innerWidth);
+        mouseY.set(clientY / innerHeight);
+    };
 
-  const scrollToAbout = () => {
-    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-  };
+    const scrollToAbout = () => {
+        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+    };
 
-  return (
-    <section 
-      onMouseMove={handleMouseMove}
-      className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#050505] perspective-[1000px] px-6"
-    >
-      <div 
-        className="absolute inset-0 opacity-15 pointer-events-none mix-blend-overlay z-10"
-        style={{ backgroundImage: `url('${ASSETS.noiseTexture}')` }}
-      ></div>
-      
-      <div className="absolute inset-0 z-0 opacity-70 mix-blend-screen pointer-events-none">
-         <GridWaveCanvas mouseX={springX} mouseY={springY} />
-      </div>
-
-      <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-12 md:gap-4">
-        <motion.div 
-            style={{ x: useTransform(springX, [0, 1], [-20, 20]) }}
-            className="text-center md:text-left relative"
+    return (
+        <section
+            onMouseMove={handleMouseMove}
+            className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#050505] perspective-[1000px] px-6"
         >
-            <div className="mb-2 flex items-center justify-center md:justify-start gap-4 ml-1">
-                <div className="h-[1px] w-8 bg-[#8A2BE2]"></div>
-                <span className="text-[#8A2BE2] font-mono tracking-[0.5em] text-[10px] uppercase">
-                    {HERO_TEXT[lang].role}
-                </span>
+            <div
+                className="absolute inset-0 opacity-15 pointer-events-none mix-blend-overlay z-10"
+                style={{ backgroundImage: `url('${ASSETS.noiseTexture}')` }}
+            ></div>
+
+            <div className="absolute inset-0 z-0 opacity-70 mix-blend-screen pointer-events-none">
+                <GridWaveCanvas mouseX={springX} mouseY={springY} />
             </div>
 
-            <h1 className="text-[14vw] md:text-[10vw] leading-[0.85] font-bold tracking-tighter font-oswald text-white uppercase mix-blend-screen">
-                {HERO_TEXT[lang].title}
-                <br />
-                <span className="relative inline-block text-[#8A2BE2]">
-                    {HERO_TEXT[lang].subtitle}
-                </span>
-            </h1>
-        </motion.div>
+            <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-12 md:gap-4">
+                <motion.div
+                    style={{ x: useTransform(springX, [0, 1], [-20, 20]) }}
+                    className="text-center md:text-left relative"
+                >
+                    <div className="mb-2 flex items-center justify-center md:justify-start gap-4 ml-1">
+                        <div className="h-[1px] w-8 bg-[#8A2BE2]"></div>
+                        <span className="text-[#8A2BE2] font-mono tracking-[0.5em] text-[10px] uppercase">
+                            {HERO_TEXT[lang].role}
+                        </span>
+                    </div>
 
-        <motion.div 
-            style={{ 
-                x: useTransform(springX, [0, 1], [30, -30]),
-                y: useTransform(springY, [0, 1], [30, -30])
-            }}
-            className="relative z-30 hidden md:block mt-24 md:mt-0 md:-ml-12"
-        >
-            <EditorTimeline />
-        </motion.div>
-      </div>
+                    <h1 className="text-[14vw] md:text-[10vw] leading-[0.85] font-bold tracking-tighter font-oswald text-white uppercase mix-blend-screen">
+                        {HERO_TEXT[lang].title}
+                        <br />
+                        <span className="relative inline-block text-[#8A2BE2]">
+                            {HERO_TEXT[lang].subtitle}
+                        </span>
+                    </h1>
+                </motion.div>
 
-      <motion.div 
-        style={{ opacity, y: y1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 cursor-pointer group"
-        onClick={scrollToAbout}
-      >
-        <span className="text-[9px] font-mono text-gray-500 uppercase tracking-[0.3em] group-hover:text-[#8A2BE2] transition-colors">{HERO_TEXT[lang].cta}</span>
-        <div className="w-[1px] h-12 bg-[#8A2BE2]/40 group-hover:bg-[#8A2BE2] transition-colors"></div>
-      </motion.div>
-    </section>
-  );
+                <motion.div
+                    style={{
+                        x: useTransform(springX, [0, 1], [30, -30]),
+                        y: useTransform(springY, [0, 1], [30, -30])
+                    }}
+                    className="relative z-30 hidden md:block mt-24 md:mt-0 md:-ml-12"
+                >
+                    <EditorTimeline />
+                </motion.div>
+            </div>
+
+            <motion.div
+                style={{ opacity, y: y1 }}
+                className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+            >
+                <button
+                    onClick={scrollToAbout}
+                    className="group relative px-8 py-3 bg-[#8A2BE2]/10 hover:bg-[#8A2BE2]/20 border border-[#8A2BE2]/50 hover:border-[#8A2BE2] transition-all duration-300 rounded-sm overflow-hidden"
+                >
+                    <div className="absolute inset-0 bg-[#8A2BE2] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-0"></div>
+                    <span className="relative z-10 font-mono text-xs font-bold text-[#8A2BE2] group-hover:text-black tracking-[0.2em] uppercase flex items-center gap-2">
+                        {HERO_TEXT[lang].cta}
+                        <motion.span
+                            animate={{ y: [0, 3, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                            ↓
+                        </motion.span>
+                    </span>
+                </button>
+            </motion.div>
+        </section>
+    );
 };
 
 const EditorTimeline = () => {
@@ -105,7 +117,7 @@ const EditorTimeline = () => {
                 </div>
 
                 <div className="space-y-1.5 relative overflow-hidden h-[90px]">
-                    <motion.div 
+                    <motion.div
                         className="absolute top-0 bottom-0 w-[1px] bg-[#8A2BE2] z-10 opacity-70"
                         animate={{ left: ['5%', '95%'] }}
                         transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
@@ -117,14 +129,14 @@ const EditorTimeline = () => {
                         <div className="absolute left-[10%] w-[35%] h-full bg-[#8A2BE2]/20 border-l border-r border-[#8A2BE2]/40"></div>
                         <div className="absolute left-[50%] w-[40%] h-full bg-[#8A2BE2]/10 border-l border-r border-[#8A2BE2]/20"></div>
                     </div>
-                    
+
                     <div className="h-6 bg-white/5 rounded-sm w-full flex items-center relative overflow-hidden border border-white/5">
                         <div className="absolute left-[20%] w-[55%] h-full bg-white/10 border-l border-r border-white/20"></div>
                     </div>
 
                     <div className="h-5 bg-white/5 rounded-sm w-full flex items-end px-0.5 pb-0.5 relative gap-[1px]">
-                         {[...Array(25)].map((_, i) => (
-                            <motion.div 
+                        {[...Array(25)].map((_, i) => (
+                            <motion.div
                                 key={i}
                                 className="w-full bg-[#8A2BE2]/30 rounded-[1px]"
                                 animate={{ height: [`${Math.random() * 60 + 20}%`, `${Math.random() * 60 + 20}%`] }}
@@ -134,7 +146,7 @@ const EditorTimeline = () => {
                     </div>
                 </div>
             </div>
-            <motion.div 
+            <motion.div
                 animate={{ y: [-3, 3, -3] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute -top-4 -right-4 bg-black/80 backdrop-blur border border-[#8A2BE2]/30 p-2 rounded-lg text-[#8A2BE2]"
@@ -158,9 +170,9 @@ const GridWaveCanvas: React.FC<{ mouseX: any, mouseY: any }> = ({ mouseX, mouseY
         let time = 0;
 
         // Optimized Grid Settings
-        const cols = 24; 
+        const cols = 24;
         const rows = 18;
-        
+
         const render = () => {
             time += 0.01;
             const w = canvas.width = window.innerWidth;
@@ -168,7 +180,7 @@ const GridWaveCanvas: React.FC<{ mouseX: any, mouseY: any }> = ({ mouseX, mouseY
             const size = Math.max(w, h) / 20;
 
             ctx.clearRect(0, 0, w, h);
-            
+
             const mx = mouseX.get() * w;
             const my = mouseY.get() * h;
 
@@ -179,7 +191,7 @@ const GridWaveCanvas: React.FC<{ mouseX: any, mouseY: any }> = ({ mouseX, mouseY
             ctx.fillStyle = bgGradient;
             ctx.fillRect(0, 0, w, h);
 
-            const points: {x: number, y: number, alpha: number, thickness: number}[][] = [];
+            const points: { x: number, y: number, alpha: number, thickness: number }[][] = [];
 
             for (let r = 0; r < rows; r++) {
                 points[r] = [];
@@ -187,13 +199,13 @@ const GridWaveCanvas: React.FC<{ mouseX: any, mouseY: any }> = ({ mouseX, mouseY
                     let x = c * size + (w / 2 - (cols * size) / 2);
                     let y = r * size + (h / 2 - (rows * size) / 2);
 
-                    const dx = x - mx; 
+                    const dx = x - mx;
                     const dy = y - my;
-                    const distToMouse = Math.sqrt(dx*dx + dy*dy);
-                    
+                    const distToMouse = Math.sqrt(dx * dx + dy * dy);
+
                     const wave = Math.sin((c + r) * 0.3 + time) * 8;
                     const interaction = Math.max(0, (250 - distToMouse)) * 0.15;
-                    
+
                     // High-contrast alpha and dynamic thickness for "powered" grid look
                     let alpha = Math.max(0.04, 0.8 - distToMouse / 400);
                     let thickness = Math.max(1, 2.5 - distToMouse / 150);
@@ -206,10 +218,10 @@ const GridWaveCanvas: React.FC<{ mouseX: any, mouseY: any }> = ({ mouseX, mouseY
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const p = points[r][c];
-                    
+
                     // Horizontal
                     if (c < cols - 1) {
-                        const p2 = points[r][c+1];
+                        const p2 = points[r][c + 1];
                         ctx.beginPath();
                         ctx.lineWidth = (p.thickness + p2.thickness) / 2;
                         ctx.strokeStyle = `rgba(138, 43, 226, ${(p.alpha + p2.alpha) / 2})`;
@@ -220,7 +232,7 @@ const GridWaveCanvas: React.FC<{ mouseX: any, mouseY: any }> = ({ mouseX, mouseY
 
                     // Vertical
                     if (r < rows - 1) {
-                        const p2 = points[r+1][c];
+                        const p2 = points[r + 1][c];
                         ctx.beginPath();
                         ctx.lineWidth = (p.thickness + p2.thickness) / 2;
                         ctx.strokeStyle = `rgba(138, 43, 226, ${(p.alpha + p2.alpha) / 2})`;
