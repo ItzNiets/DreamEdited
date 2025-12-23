@@ -14,14 +14,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const updateTime = () => {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('pt-BR', { 
-            timeZone: 'America/Sao_Paulo',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
-        setTime(timeString);
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      setTime(timeString);
     };
     updateTime();
     const interval = setInterval(updateTime, 1000);
@@ -40,31 +40,28 @@ const App: React.FC = () => {
 
       <footer id="footer" className="py-12 border-t border-[#111] bg-[#020202] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-0">
-            <div className="flex flex-col">
-                <h2 className="text-xl font-bold text-white tracking-tighter mb-1 font-oswald uppercase">RAFAEL ALVES</h2>
-                <div className="flex items-center gap-2 text-xs font-mono text-gray-500">
-                    <div className="w-2 h-2 bg-[#8A2BE2] rounded-full animate-pulse"></div>
-                    <span className="uppercase">{UI_STRINGS[lang].footerStatus}</span>
-                </div>
+          <div className="flex flex-col">
+            <h2 className="text-xl font-bold text-white tracking-tighter mb-1 font-oswald uppercase">RAFAEL ALVES</h2>
+            <div className="flex items-center gap-2 text-xs font-mono text-gray-500">
+              <div className="w-2 h-2 bg-[#8A2BE2] rounded-full animate-pulse"></div>
+              <span className="uppercase">{UI_STRINGS[lang].footerStatus}</span>
             </div>
-            <div className="flex flex-col sm:flex-row gap-6 sm:gap-12">
-                <a href={`mailto:${CONTACT_INFO.email}`} className="group flex items-center gap-2 text-xs font-mono text-gray-400 hover:text-white transition-colors">
-                    <Mail size={14} className="group-hover:text-[#8A2BE2] transition-colors" />
-                    <span>{CONTACT_INFO.email}</span>
-                </a>
-                <div className="group flex items-center gap-2 text-xs font-mono text-gray-400 hover:text-white transition-colors">
-                    <Phone size={14} className="group-hover:text-[#8A2BE2] transition-colors" />
-                    <span>{CONTACT_INFO.phone}</span>
-                </div>
-                <div className="group flex items-center gap-2 text-xs font-mono text-gray-400 hover:text-white transition-colors">
-                    <MapPin size={14} className="group-hover:text-[#8A2BE2] transition-colors" />
-                    <span>{CONTACT_INFO.location}</span>
-                </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-12">
+            <a href={`mailto:${CONTACT_INFO.email}`} className="group flex items-center gap-2 text-xs font-mono text-gray-400 hover:text-white transition-colors">
+              <Mail size={14} className="group-hover:text-[#8A2BE2] transition-colors" />
+              <span>{CONTACT_INFO.email}</span>
+            </a>
+            <div className="group flex items-center gap-2 text-xs font-mono text-gray-400 hover:text-white transition-colors">
+              <MapPin size={14} className="group-hover:text-[#8A2BE2] transition-colors" />
+              <span>{CONTACT_INFO.location}</span>
             </div>
-            <div className="text-right">
-                <div className="font-mono text-[#8A2BE2] text-sm font-bold tracking-widest mb-1">{time}</div>
-                <p className="text-[10px] text-gray-600 font-mono uppercase">© {new Date().getFullYear()} // {UI_STRINGS[lang].footerCredits}</p>
-            </div>
+          </div>
+          <div className="text-right">
+            <div className="font-mono text-[#8A2BE2] text-sm font-bold tracking-widest mb-1">{time}</div>
+            <p className="text-[10px] text-gray-600 font-mono uppercase">© {new Date().getFullYear()} // {UI_STRINGS[lang].footerCredits}</p>
+            <p className="text-[9px] text-[#8A2BE2]/70 font-mono uppercase mt-1">CO-ENGINEERED WITH GEMINI AI</p>
+          </div>
         </div>
       </footer>
     </div>
